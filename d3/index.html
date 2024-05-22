@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
@@ -16,7 +17,8 @@
       fill: orange;
     }
 
-    .axis path, .axis line {
+    .axis path,
+    .axis line {
       fill: none;
       shape-rendering: crispEdges;
     }
@@ -50,6 +52,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="metadata" class="metadata"></div>
   <div id="pos_viz"></div>
@@ -78,60 +81,86 @@
     }
 
     const posTags = {
-      CC: "Conjunction",
-      CD: "Number",
-      DT: "Determiner",
-      EX: "Existential",
-      FW: "Foreign",
-      IN: "Preposition",
-      JJ: "Adjective",
-      JJR: "Adjective",
-      JJS: "Adjective",
-      LS: "List Marker",
-      MD: "Modal",
-      NN: "Noun",
-      NNS: "Noun",
-      NNP: "Proper Noun",
-      NNPS: "Proper Noun",
-      PDT: "Predeterminer",
-      POS: "Possessive",
-      PRP: "Pronoun",
-      PRP$: "Pronoun",
-      RB: "Adverb",
-      RBR: "Adverb",
-      RBS: "Adverb",
-      RP: "Particle",
-      SYM: "Symbol",
-      TO: "To",
-      UH: "Interjection",
-      VB: "Verb",
-      VBD: "Verb",
-      VBG: "Verb",
-      VBN: "Verb",
-      VBP: "Verb",
-      VBZ: "Verb",
-      WDT: "Wh-Determiner",
-      WP: "Wh-Pronoun",
-      WP$: "Wh-Pronoun",
-      WRB: "Wh-Adverb"
+      CC: "Other",
+      CD: "Other",
+      DT: "Other",
+      EX: "Other",
+      FW: "Other",
+      IN: "Other",
+      JJ: "AdjectivesAdverbs",
+      JJR: "AdjectivesAdverbs",
+      JJS: "AdjectivesAdverbs",
+      LS: "Other",
+      MD: "Other",
+      NN: "Nouns",
+      NNS: "Nouns",
+      NNP: "Nouns",
+      NNPS: "Nouns",
+      PDT: "Other",
+      POS: "Other",
+      PRP: "Pronouns",
+      PRP$: "Pronouns",
+      RB: "AdjectivesAdverbs",
+      RBR: "AdjectivesAdverbs",
+      RBS: "AdjectivesAdverbs",
+      RP: "Other",
+      SYM: "Other",
+      TO: "Other",
+      UH: "Other",
+      UNK: "Other",
+      VB: "Verbs",
+      VBD: "Verbs",
+      VBG: "Verbs",
+      VBN: "Verbs",
+      VBP: "Verbs",
+      VBZ: "Verbs",
+      WDT: "Other",
+      WP: "Pronouns",
+      WP$: "Pronouns",
+      WRB: "AdjectivesAdverbs"
     };
 
-    function aggregatePosData(pages) {
-      return pages.map(page => {
-        const posCounts = {};
+    function aggregatePosDataByPage(pages) {
+      // This array will store POS data for each page
+      const posDataByPage = [];
+
+      pages.forEach(page => {
+        // Initialize posCounts with all categories set to 0
+        const posCounts = {
+          "AdjectivesAdverbs": 0,
+          "Nouns": 0,
+          "Pronouns": 0,
+          "Verbs": 0,
+          "Other": 0
+        };
+
+        // Check if the page has a body and a tokenPosCount property
         if (page.body && page.body.tokenPosCount) {
           for (const [token, posObj] of Object.entries(page.body.tokenPosCount)) {
             for (const [pos, count] of Object.entries(posObj)) {
-              const category = posTags[pos] || "Other";
-              posCounts[category] = (posCounts[category] || 0) + count;
+              const category = posTags[pos];
+              if (category) {
+                posCounts[category] += count;
+              }
+            }
+          }
+
+          // Normalize counts to percentages for this page
+          const totalCount = Object.values(posCounts).reduce((sum, count) => sum + count, 0);
+          if (totalCount > 0) {
+            for (const category in posCounts) {
+              posCounts[category] = (posCounts[category] / totalCount) * 100;
             }
           }
         }
-        //console.log('POS counts for page:', posCounts);
-        //console.log(typeof posCounts);
-        return posCounts;
+
+        // Add the POS counts for this page to the array
+        posDataByPage.push(posCounts);
       });
+
+      return posDataByPage;
     }
+
 
     async function createBarChart(volumeId) {
       try {
@@ -140,31 +169,33 @@
           throw new Error('No pages found in volume data');
         }
 
-        const posCountsByPage = aggregatePosData(pages);
+        const posCountsByPage = aggregatePosDataByPage(pages);
         console.log('Aggregated POS data by page:', posCountsByPage);
 
         const sampleData = posCountsByPage.map((counts, index) => ({
           page: index + 1,
-          Adjective: counts['Adjective'] || 0,
-          Noun: counts['Noun'] || 0,
-          Verb: counts['Verb'] || 0
+          AdjectivesAdverb: counts['AdjectivesAdverbs'] || 0,
+          Noun: counts['Nouns'] || 0,
+          Pronoun: counts['Pronouns'] || 0,
+          Verb: counts['Verbs'] || 0,
+          Other: counts['Other'] || 0
         }));
         console.log('Sample data for D3.js:', sampleData);
 
-        const keys = ["Adjective", "Noun", "Verb"];
+        const keys = ["AdjectivesAdverb", "Noun", "Pronoun", "Verb", "Other"];
         const stackedData = d3.stack().keys(keys)(sampleData);
         console.log('Stacked data for D3.js:', stackedData);
 
         const margin = { top: 40, right: 120, bottom: 50, left: 50 },
-              width = 1000 - margin.left - margin.right,
-              height = 400 - margin.top - margin.bottom;
+          width = 1000 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
 
         const svg = d3.select("#pos_viz")
           .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
           .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+          .attr("transform", `translate(${margin.left},${margin.top})`);
 
         // Add X axis
         const tickValues = sampleData
@@ -201,7 +232,7 @@
           .attr("transform", "rotate(-90)")
           .attr("x", -height / 2)
           .attr("y", -margin.left + 15)
-          .text("Count");
+          .text("Percentage of Words");
 
         // Add title
         svg.append("text")
@@ -227,23 +258,23 @@
           .selectAll("g")
           .data(stackedData)
           .enter().append("g")
-            .attr("fill", d => color(d.key))
-            .selectAll("rect")
-            .data(d => d)
-            .enter().append("rect")
-              .attr("x", d => x(d.data.page))
-              .attr("y", d => y(d[1]))
-              .attr("height", d => y(d[0]) - y(d[1]))
-              .attr("width", x.bandwidth())
-              .on("mouseover", (event, d) => {
-                tooltip.transition().duration(200).style("opacity", .9);
-                tooltip.html(`Page: ${d.data.page}<br>Adjective: ${d.data.Adjective}<br>Noun: ${d.data.Noun}<br>Verb: ${d.data.Verb}`)
-                  .style("left", (event.pageX + 5) + "px")
-                  .style("top", (event.pageY - 28) + "px");
-              })
-              .on("mouseout", () => {
-                tooltip.transition().duration(500).style("opacity", 0);
-              });
+          .attr("fill", d => color(d.key))
+          .selectAll("rect")
+          .data(d => d)
+          .enter().append("rect")
+          .attr("x", d => x(d.data.page))
+          .attr("y", d => y(d[1]))
+          .attr("height", d => y(d[0]) - y(d[1]))
+          .attr("width", x.bandwidth())
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(200).style("opacity", .9);
+            tooltip.html(`Page: ${d.data.page}<br>Adjective: ${d.data.AdjectivesAdverb}<br>Noun: ${d.data.Noun}<br>Pronoun: ${d.data.Pronoun}<br>Verb: ${d.data.Verb}<br>Other: ${d.data.Other}`)
+              .style("left", (event.pageX + 5) + "px")
+              .style("top", (event.pageY - 28) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(500).style("opacity", 0);
+          });
 
         // legend
         const legend = svg.append("g")
@@ -278,11 +309,12 @@
       }
     }
 
-    
+
 
 
     // volume ID
     createBarChart('mdp.39015016452230');
   </script>
 </body>
+
 </html>
