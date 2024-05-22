@@ -51,6 +51,7 @@
   </style>
 </head>
 <body>
+  <div id="metadata" class="metadata"></div>
   <div id="pos_viz"></div>
 
   <script>
@@ -62,6 +63,17 @@
       }
       const data = await response.json();
       console.log('Full API response:', JSON.stringify(data, null, 2));
+      // add metadata to the page on metadata div
+      // title: data.data.metadata.title
+
+      const metadata = document.getElementById('metadata');
+      metadata.innerHTML = `
+        <h2>${data.data.metadata.title}</h2>
+        <p>Author: ${data.data.metadata.contributor.name}</p>
+        <p>Publication Year: ${data.data.metadata.pubDate}</p>
+      `;
+
+
       return data.data.features.pages;
     }
 
@@ -115,8 +127,8 @@
             }
           }
         }
-        console.log('POS counts for page:', posCounts);
-        console.log(typeof posCounts);
+        //console.log('POS counts for page:', posCounts);
+        //console.log(typeof posCounts);
         return posCounts;
       });
     }
@@ -265,6 +277,9 @@
         console.error('Error creating bar chart:', error);
       }
     }
+
+    
+
 
     // volume ID
     createBarChart('mdp.39015016452230');
