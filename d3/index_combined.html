@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    .chart {
+      font: 10px sans-serif;
+      shape-rendering: crispEdges;
+    }
+
+    .bar {
+      fill: steelblue;
+    }
+
+    .bar:hover {
+      fill: orange;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      shape-rendering: crispEdges;
+    }
+
+    .legend {
+      font-size: 12px;
+    }
+
+    .axis-label {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: auto;
+      height: auto;
+      padding: 5px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <form onsubmit="return processForm()">
+    <label for="volumeId">Enter your HTID:</label>
+    <input type="text" id="volumeId" required>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="metadata" class="metadata"></div>
+  <div id="pos_viz"></div>
+
+  <script>
+    async function fetchVolumeData(volumeId) {
+      const url = `https://data.htrc.illinois.edu/ef-api/volumes/${volumeId}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Volume ${volumeId} not found`);
+      }
+      const data = await response.json();
+      console.log('Full API response:', JSON.stringify(data, null, 2));
+      // add metadata to the page on metadata div
+      // title: data.data.metadata.title
+
+      const metadata = document.getElementById('metadata');
+      metadata.innerHTML = `
+        <h2>${data.data.metadata.title}</h2>
+        <p>Author: ${data.data.metadata.contributor.name}</p>
+        <p>Publication Year: ${data.data.metadata.pubDate}</p>
+      `;
+
+      return data.data.features.pages;
+    }
+
+    // user input 
+    async function cleanId(volumeId) {
+      const i = volumeId.indexOf('.');
+      if (i == -1) throw `Invalid clean htid: ${id}`;
+      const lib = volumeId.substring(0, i);
+      const libId = volumeId.substring(i + 1);
+      return `${lib}.${libId.replaceAll(':', '+').replaceAll('/', '=').replaceAll('.', ',')}`;
+    }
+    //user input end 
+
+    const posTags = {
+      CC: "Other",
+      CD: "Other",
+      DT: "Other",
+      EX: "Other",
+      FW: "Other",
+      IN: "Other",
+      JJ: "AdjectivesAdverbs",
+      JJR: "AdjectivesAdverbs",
+      JJS: "AdjectivesAdverbs",
+      LS: "Other",
+      MD: "Other",
+      NN: "Nouns",
+      NNS: "Nouns",
+      NNP: "Nouns",
+      NNPS: "Nouns",
+      PDT: "Other",
+      POS: "Other",
+      PRP: "Pronouns",
+      PRP$: "Pronouns",
+      RB: "AdjectivesAdverbs",
+      RBR: "AdjectivesAdverbs",
+      RBS: "AdjectivesAdverbs",
+      RP: "Other",
+      SYM: "Other",
+      TO: "Other",
+      UH: "Other",
+      UNK: "Other",
+      VB: "Verbs",
+      VBD: "Verbs",
+      VBG: "Verbs",
+      VBN: "Verbs",
+      VBP: "Verbs",
+      VBZ: "Verbs",
+      WDT: "Other",
+      WP: "Pronouns",
+      WP$: "Pronouns",
+      WRB: "AdjectivesAdverbs"
+    };
+
+    function aggregatePosDataByPage(pages) {
+      // This array will store POS data for each page
+      const posDataByPage = [];
+
+      pages.forEach(page => {
+        // Initialize posCounts with all categories set to 0
+        const posCounts = {
+          "AdjectivesAdverbs": 0,
+          "Nouns": 0,
+          "Pronouns": 0,
+          "Verbs": 0,
+          "Other": 0
+        };
+
+        // Check if the page has a body and a tokenPosCount property
+        if (page.body && page.body.tokenPosCount) {
+          for (const [token, posObj] of Object.entries(page.body.tokenPosCount)) {
+            for (const [pos, count] of Object.entries(posObj)) {
+              const category = posTags[pos];
+              if (category) {
+                posCounts[category] += count;
+              }
+            }
+          }
+
+          // Normalize counts to percentages for this page
+          const totalCount = Object.values(posCounts).reduce((sum, count) => sum + count, 0);
+          if (totalCount > 0) {
+            for (const category in posCounts) {
+              posCounts[category] = (posCounts[category] / totalCount) * 100;
+            }
+          }
+        }
+
+        // Add the POS counts for this page to the array
+        posDataByPage.push(posCounts);
+      });
+
+      return posDataByPage;
+    }
+
+
+    async function createBarChart(volumeId) {
+      try {
+        const cleanedVolumeId = await cleanId(volumeId);
+        const pages = await fetchVolumeData(cleanedVolumeId);
+        if (pages.length === 0) {
+          throw new Error('No pages found in volume data');
+        }
+
+        const posCountsByPage = aggregatePosDataByPage(pages);
+        console.log('Aggregated POS data by page:', posCountsByPage);
+
+        const sampleData = posCountsByPage.map((counts, index) => ({
+          page: index + 1,
+          AdjectivesAdverb: counts['AdjectivesAdverbs'] || 0,
+          Noun: counts['Nouns'] || 0,
+          Pronoun: counts['Pronouns'] || 0,
+          Verb: counts['Verbs'] || 0,
+          Other: counts['Other'] || 0
+        }));
+        console.log('Sample data for D3.js:', sampleData);
+
+        const keys = ["AdjectivesAdverb", "Noun", "Pronoun", "Verb", "Other"];
+        const stackedData = d3.stack().keys(keys)(sampleData);
+        console.log('Stacked data for D3.js:', stackedData);
+
+        const margin = { top: 40, right: 140, bottom: 50, left: 50 },
+          width = 1000 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+        const svg = d3.select("#pos_viz")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Add X axis
+        const tickValues = sampleData
+          .map(d => d.page)
+          .filter(page => page % 50 === 0)
+
+        // Add X axis
+        const x = d3.scaleBand()
+          .domain(sampleData.map(d => d.page))
+          .range([0, width])
+          .padding([0.2])
+        svg.append("g")
+          .attr("transform", `translate(0,${height})`)
+          .call(d3.axisBottom(x).tickValues(tickValues).tickSizeOuter(0))
+
+        // Y axis
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(stackedData, d => d3.max(d, d => d[1]))])
+          .range([height, 0]);
+        svg.append("g")
+          .call(d3.axisLeft(y));
+
+        // axis labels
+        svg.append("text")
+          .attr("class", "axis-label")
+          .attr("text-anchor", "end")
+          .attr("x", width / 2)
+          .attr("y", height + margin.bottom - 10)
+          .text("Pages");
+
+        svg.append("text")
+          .attr("class", "axis-label")
+          .attr("text-anchor", "end")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -height / 2)
+          .attr("y", -margin.left + 15)
+          .text("Percentage of Words");
+
+        // Add title
+        svg.append("text")
+          .attr("class", "title")
+          .attr("text-anchor", "middle")
+          .attr("x", width / 2)
+          .attr("y", -10)
+          .text("Parts of Speech Across Pages");
+
+        // Color palette
+        const color = d3.scaleOrdinal()
+          .domain(keys)
+          .range(d3.schemeCategory10);
+
+        // Tooltip
+        const tooltip = d3.select("body")
+          .append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+        // bars
+        svg.append("g")
+          .selectAll("g")
+          .data(stackedData)
+          .enter().append("g")
+          .attr("fill", d => color(d.key))
+          .selectAll("rect")
+          .data(d => d)
+          .enter().append("rect")
+          .attr("x", d => x(d.data.page))
+          .attr("y", d => y(d[1]))
+          .attr("height", d => y(d[0]) - y(d[1]))
+          .attr("width", x.bandwidth())
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(200).style("opacity", .9);
+            tooltip.html(`Page: ${d.data.page}<br>Adjective: ${d.data.AdjectivesAdverb}<br>Noun: ${d.data.Noun}<br>Pronoun: ${d.data.Pronoun}<br>Verb: ${d.data.Verb}<br>Other: ${d.data.Other}`)
+              .style("left", (event.pageX + 5) + "px")
+              .style("top", (event.pageY - 28) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(500).style("opacity", 0);
+          });
+
+        // legend
+        const legend = svg.append("g")
+          .attr("class", "legend")
+          .attr("transform", `translate(${width + 20}, 0)`);
+
+        legend.append("text")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("class", "axis-label")
+          .text("Parts of Speech");
+
+        const legendItems = legend.selectAll("g")
+          .data(keys)
+          .enter().append("g")
+          .attr("transform", (d, i) => `translate(0, ${i * 20 + 20})`);
+
+        legendItems.append("rect")
+          .attr("width", 18)
+          .attr("height", 18)
+          .attr("fill", color);
+
+        legendItems.append("text")
+          .attr("x", 24)
+          .attr("y", 9)
+          .attr("dy", "0.35em")
+          .text(d => d);
+
+        console.log("SVG element appended to the body");
+      } catch (error) {
+        console.error('Error creating bar chart:', error);
+      }
+    }
+
+    function processForm() {
+      const volumeId = document.getElementById("volumeId").value;
+      createBarChart(volumeId);
+      return false;
+    }
+
+
+
+
+    // volume ID
+    //createBarChart('mdp.39015016452230');
+  </script>
+</body>
+
+</html>
