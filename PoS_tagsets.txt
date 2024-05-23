@@ -107,7 +107,32 @@
 
 <!-- French -->
     const posTags_fr = {
-        
+    ADJ    = "Adjectives"
+    ADJWH  = "Adjectives"
+    ADV    = "Adverbs"
+    ADVWH  = "Adverbs"
+    CC     = "Other"    
+    CLO    = "Pronouns"
+    CLR    = "Pronouns"
+    CLS    = "Pronouns"
+    CS     = "Other"
+    DET    = "Other"
+    DETWH  = "Other"
+    ET     = "Other"
+    NC     = "Nouns"
+    NPP    = "Nouns"
+    P      = "Other"
+    PUNC   = "Other"
+    PRO    = "Pronouns"
+    PROREL = "Pronouns"
+    PROWH  = "Pronouns"
+    V      = "Verbs"
+    VIMP   = "Verbs"
+    VINF   = "Verbs"
+    VPP    = "Verbs"
+    VPR    = "Verbs"
+    VS     = "Verbs"
+    I      = "Other"
     }
 
 <!-- German -->
