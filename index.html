@@ -5,137 +5,138 @@
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
     body {
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Align items to the top */
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f5f5f5;
-    padding-top: 20px; /* Add some padding at the top */
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* Align items to the top */
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+      padding-top: 20px; /* Add some padding at the top */
     }
+
     p {
-        margin: 0px;
+      margin: 0px;
     }
 
     form {
-    margin-bottom: 0px;
-    display: flex;
-    flex-direction: row; /* Align input and button in a row */
-    align-items: center;
+      margin-bottom: 0px;
+      display: flex;
+      flex-direction: row; /* Align input and button in a row */
+      align-items: center;
     }
 
     label {
-    font-size: 1em; /* Decrease the font size */
-    margin-right: 10px; /* Add space between label and input */
+      font-size: 1em; /* Decrease the font size */
+      margin-right: 10px; /* Add space between label and input */
     }
 
     input[type="text"] {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 200px;
-    margin-right: 10px; /* Add space between input and button */
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px;
+      margin-right: 10px; /* Add space between input and button */
     }
 
     button {
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
     button:hover {
-    background-color: #2980b9;
+      background-color: #2980b9;
     }
 
     #metadata {
-    text-align: center;
-    margin-bottom: 0px;
+      text-align: center;
+      margin-bottom: 0px;
     }
 
     .chart {
-    font: 10px sans-serif;
-    shape-rendering: crispEdges;
+      font: 10px sans-serif;
+      shape-rendering: crispEdges;
     }
 
     .bar {
-    fill: steelblue;
+      fill: steelblue;
     }
 
     .bar:hover {
-    fill: orange;
+      fill: orange;
     }
 
     .axis path,
     .axis line {
-    fill: none;
-    shape-rendering: crispEdges;
+      fill: none;
+      shape-rendering: crispEdges;
     }
 
     .legend {
-    font-size: 12px;
+      font-size: 12px;
     }
 
     .axis-label {
-    font-size: 14px;
-    font-weight: bold;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .title {
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
     }
 
     .tooltip {
-    position: absolute;
-    text-align: center;
-    width: auto;
-    height: auto;
-    padding: 5px;
-    font: 12px sans-serif;
-    background: lightsteelblue;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
+      position: absolute;
+      text-align: center;
+      width: auto;
+      height: auto;
+      padding: 5px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
     }
 
     .spinner {
-    display: none;
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 80px; /* Reduce size for better visibility */
-    height: 80px; /* Reduce size for better visibility */
-    animation: spin 2s linear infinite;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
+      display: none;
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 80px; /* Reduce size for better visibility */
+      height: 80px; /* Reduce size for better visibility */
+      animation: spin 2s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
     }
 
     @keyframes spin {
-    0% {
+      0% {
         transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-    }
+      }
 
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
 <body>
-    <div id="loadingSpinner" class="spinner"></div>
+  <div id="loadingSpinner" class="spinner"></div>
   <form onsubmit="return processForm()">
     <label for="volumeId">Enter your HTID:</label>
     <input type="text" id="volumeId" required>
@@ -164,57 +165,253 @@
       return `${lib}.${libId.replaceAll(':', '+').replaceAll('/', '=').replaceAll('.', ',')}`;
     }
 
-    const posTags = {
-      CC: "Other",
-      CD: "Other",
-      DT: "Other",
-      EX: "Other",
-      FW: "Other",
-      IN: "Other",
-      JJ: "AdjectivesAdverbs",
-      JJR: "AdjectivesAdverbs",
-      JJS: "AdjectivesAdverbs",
-      LS: "Other",
-      MD: "Other",
-      NN: "Nouns",
-      NNS: "Nouns",
-      NNP: "Nouns",
-      NNPS: "Nouns",
-      PDT: "Other",
-      POS: "Other",
-      PRP: "Pronouns",
-      PRP$: "Pronouns",
-      RB: "AdjectivesAdverbs",
-      RBR: "AdjectivesAdverbs",
-      RBS: "AdjectivesAdverbs",
-      RP: "Other",
-      SYM: "Other",
-      TO: "Other",
-      UH: "Other",
-      UNK: "Other",
-      VB: "Verbs",
-      VBD: "Verbs",
-      VBG: "Verbs",
-      VBN: "Verbs",
-      VBP: "Verbs",
-      VBZ: "Verbs",
-      WDT: "Other",
-      WP: "Pronouns",
-      WP$: "Pronouns",
-      WRB: "AdjectivesAdverbs"
-    };
+    const posTags_en = {
+    CC: "Other",
+    CD: "Other",
+    DT: "Other",
+    EX: "Other",
+    FW: "Other",
+    IN: "Other",
+    JJ: "AdjectivesAdverbs",
+    JJR: "AdjectivesAdverbs",
+    JJS: "AdjectivesAdverbs",
+    LS: "Other",
+    MD: "Other",
+    NN: "Nouns",
+    NNS: "Nouns",
+    NNP: "Nouns",
+    NNPS: "Nouns",
+    PDT: "Other",
+    POS: "Other",
+    PRP: "Pronouns",
+    PRP$: "Pronouns",
+    RB: "AdjectivesAdverbs",
+    RBR: "AdjectivesAdverbs",
+    RBS: "AdjectivesAdverbs",
+    RP: "Other",
+    SYM: "Other",
+    TO: "Other",
+    UH: "Other",
+    UNK: "Other",
+    VB: "Verbs",
+    VBD: "Verbs",
+    VBG: "Verbs",
+    VBN: "Verbs",
+    VBP: "Verbs",
+    VBZ: "Verbs",
+    WDT: "Other",
+    WP: "Pronouns",
+    WP$: "Pronouns",
+    WRB: "AdjectivesAdverbs"
+}
 
-    function aggregatePosDataByPage(pages) {
+const posTags_ar = {
+    ADJ: "AdjectivesAdverbs",
+    CC: "Other",
+    CD: "Other",
+    DT: "Other",
+    DTJJ: "AdjectivesAdverbs",
+    DTJJR: "AdjectivesAdverbs",
+    DTNN: "Nouns",
+    DTNNP: "Nouns",
+    DTNNPS: "Nouns",
+    DTNNS: "Nouns",
+    IN: "Other",
+    JJ: "AdjectivesAdverbs",
+    JJR: "AdjectivesAdverbs",
+    NN: "Nouns",
+    NNP: "Nouns",
+    NNPS: "Nouns",
+    NNS: "Nouns",
+    NOUN: "Nouns",
+    PRP: "Pronouns",
+    PRP$: "Pronouns",
+    PUNC: "Other",
+    RB: "AdjectivesAdverbs",
+    RP: "Other",
+    UH: "Other",
+    VB: "Verbs",
+    VBD: "Verbs",
+    VBG: "Verbs",
+    VBN: "Verbs",
+    VBP: "Verbs",
+    VN: "Verbs",
+    WP: "Pronouns",
+    WRB: "AdjectivesAdverbs"
+};
+
+
+const posTags_zh = {
+    VA: "AdjectivesAdverbs",
+    VC: "Verbs",
+    VE: "Verbs",
+    VV: "Verbs",
+    NR: "Nouns",
+    NT: "Nouns",
+    NN: "Nouns",
+    PN: "Pronouns",
+    AD: "AdjectivesAdverbs",
+    LC: "Other",
+    DT: "Other",
+    CD: "Other",
+    OD: "Other",
+    P: "Other",
+    CC: "Other",
+    CS: "Other",
+    DEC: "Other",
+    DEG: "Other",
+    DER: "Other",
+    DEV: "Other",
+    SP: "Other",
+    AS: "Other",
+    ETC: "Other",
+    MSP: "Other",
+    IJ: "Other",
+    ON: "Other",
+    PU: "Other",
+    JJ: "Other",
+    FW: "Other",
+    LB: "Other",
+    SB: "Other",
+    BA: "Other"
+};
+
+const posTags_es = {
+    ADJ: "AdjectivesAdverbs",
+    ADP: "Other",
+    ADV: "AdjectivesAdverbs",
+    AUX: "Verbs",
+    CONJ: "Other",
+    CCONJ: "Other",
+    DET: "Other",
+    INTJ: "Other",
+    NOUN: "Nouns",
+    NUM: "Other",
+    PART: "Other",
+    PROPN: "Noun",
+    PUNCT: "Other",
+    SCONJ: "Other",
+    SYM: "Other",
+    VERB: "Verbs",
+    X: "Other",
+    SPACE: "Other"
+}
+
+const posTags_fr = {
+    ADJ: "AdjectivesAdverbs",
+    ADJWH: "AdjectivesAdverbs",
+    ADV: "AdjectivesAdverbs",
+    ADVWH: "AdjectivesAdverbs",
+    CC: "Other",
+    CLO: "Pronouns",
+    CLR: "Pronouns",
+    CLS: "Pronouns",
+    CS: "Other",
+    DET: "Other",
+    DETWH: "Other",
+    ET: "Other",
+    NC: "Nouns",
+    NPP: "Nouns",
+    P: "Other",
+    PUNC: "Other",
+    PRO: "Pronouns",
+    PROREL: "Pronouns",
+    PROWH: "Pronouns",
+    V: "Verbs",
+    VIMP: "Verbs",
+    VINF: "Verbs",
+    VPP: "Verbs",
+    VPR: "Verbs",
+    VS: "Verbs",
+    I: "Other",
+}
+
+
+const posTags_de = {
+    ADJA: "AdjectivesAdverbs",
+    ADJD: "AdjectivesAdverbs",
+    ADV: "AdjectivesAdverbs",
+    APPR: "Other",
+    APPRART: "Other",
+    APPO: "Other",
+    APZR: "Other",
+    ART: "Other",
+    CARD: "Other",
+    FM: "Other",
+    ITJ: "Other",
+    KOUI: "Other",
+    KOUS: "Other",
+    KON: "Other",
+    KOKOM: "Other",
+    NN: "Nouns",
+    NE: "Nouns",
+    PDS: "Pronouns",
+    PDAT: "Pronouns",
+    PIS: "Pronouns",
+    PIAT: "Pronouns",
+    PIDAT: "Pronouns",
+    PPER: "Pronouns",
+    PPOSS: "Pronouns",
+    PPOSAT: "Pronouns",
+    PRELS: "Pronouns",
+    PRELAT: "Pronouns",
+    PRF: "Pronouns",
+    PWS: "Pronouns",
+    PWAT: "Pronouns",
+    PWAV: "Pronouns",
+    PAV: "Pronouns",
+    PTKZU: "AdjectivesAdverbs",
+    PTKNEG: "Other",
+    PTKVZ: "Other",
+    PTKANT: "Other",
+    PTKA: "Other",
+    VVFIN: "Verbs",
+    VVIMP: "Verbs",
+    VVINF: "Verbs",
+    VVIZU: "Verbs",
+    VVPP: "Verbs",
+    VAFIN: "Verbs",
+    VAIMP: "Verbs",
+    VAINF: "Verbs",
+    VAPP: "Verbs",
+    VMFIN: "Verbs",
+    VMINF: "Verbs",
+    VMOO: "Verbs",
+    XY: "Other"
+
+}
+
+    function getPosTags(language) {
+      if (language === 'eng') {
+        return posTags_en;
+      }
+      if (language === 'ara') {
+        return posTags_ar;
+      }
+      if (language === 'chi') {
+        return posTags_zh;
+      }
+      if (language === 'spa') {
+        return posTags_es;
+      }
+      if (language === 'fre') {
+        return posTags_fr;
+      }
+      if (language === 'ger') {
+        return posTags_de;
+      } else {
+        alert('Language not supported');
+      }
+    }
+
+    function aggregatePosDataByPage(pages, posTags, categories) {
       const posDataByPage = [];
 
       pages.forEach(page => {
-        const posCounts = {
-          "AdjectivesAdverbs": 0,
-          "Nouns": 0,
-          "Pronouns": 0,
-          "Verbs": 0,
-          "Other": 0
-        };
+        const posCounts = categories.reduce((obj, category) => {
+          obj[category] = 0;
+          return obj;
+        }, {});
 
         if (page.body && page.body.tokenPosCount) {
           for (const [token, posObj] of Object.entries(page.body.tokenPosCount)) {
@@ -258,21 +455,22 @@
           throw new Error('No pages found in volume data');
         }
 
-        const posCountsByPage = aggregatePosDataByPage(pages);
+        const language = data.data.metadata.language;
+        const posTags = getPosTags(language);
+        const categories = ["AdjectivesAdverbs", "Nouns", "Pronouns", "Verbs", "Other"];
+        const posCountsByPage = aggregatePosDataByPage(pages, posTags, categories);
         console.log('Aggregated POS data by page:', posCountsByPage);
 
-        const sampleData = posCountsByPage.map((counts, index) => ({
-          page: index + 1,
-          AdjectivesAdverb: counts['AdjectivesAdverbs'] || 0,
-          Noun: counts['Nouns'] || 0,
-          Pronoun: counts['Pronouns'] || 0,
-          Verb: counts['Verbs'] || 0,
-          Other: counts['Other'] || 0
-        }));
+        const sampleData = posCountsByPage.map((counts, index) => {
+          const dataObj = { page: index + 1 };
+          categories.forEach(category => {
+            dataObj[category] = counts[category] || 0;
+          });
+          return dataObj;
+        });
         console.log('Sample data for D3.js:', sampleData);
 
-        const keys = ["AdjectivesAdverb", "Noun", "Pronoun", "Verb", "Other"];
-        const stackedData = d3.stack().keys(keys)(sampleData);
+        const stackedData = d3.stack().keys(categories)(sampleData);
         console.log('Stacked data for D3.js:', stackedData);
 
         const margin = { top: 40, right: 140, bottom: 50, left: 50 },
@@ -329,7 +527,7 @@
           .text(`Parts of Speech Across Pages for ${data.data.metadata.title}`);
 
         const color = d3.scaleOrdinal()
-          .domain(keys)
+          .domain(categories)
           .range(d3.schemeCategory10);
 
         const tooltip = d3.select("body")
@@ -350,8 +548,9 @@
           .attr("height", d => y(d[0]) - y(d[1]))
           .attr("width", x.bandwidth())
           .on("mouseover", (event, d) => {
+            const tooltipData = categories.map(category => `${category}: ${d.data[category]}`).join("<br>");
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`Page: ${d.data.page}<br>Adjective: ${d.data.AdjectivesAdverb}<br>Noun: ${d.data.Noun}<br>Pronoun: ${d.data.Pronoun}<br>Verb: ${d.data.Verb}<br>Other: ${d.data.Other}`)
+            tooltip.html(`Page: ${d.data.page}<br>${tooltipData}`)
               .style("left", (event.pageX + 5) + "px")
               .style("top", (event.pageY - 28) + "px");
           })
@@ -370,7 +569,7 @@
           .text("Parts of Speech");
 
         const legendItems = legend.selectAll("g")
-          .data(keys)
+          .data(categories)
           .enter().append("g")
           .attr("transform", (d, i) => `translate(0, ${i * 20 + 20})`);
 
@@ -403,7 +602,7 @@
 
     function processForm() {
       const volumeId = document.getElementById("volumeId").value;
-      
+
       const container = document.createElement('div');
       const metadataContainer = document.createElement('div');
       const vizContainer = document.createElement('div');
