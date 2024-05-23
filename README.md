@@ -29,6 +29,6 @@ HTRC TORCHLITE Hackathon group working on Part of Speech
 ### Sample non-English HTIDs:
  - Arabic: mdp.39015064570461
  - Chinese: uiug.30112031277228
- - French: umn.31951002055112
+ - French: mdp.49015000787391
  - German: mdp.39015024518378
  - Spanish: hvd.hwjqd8
