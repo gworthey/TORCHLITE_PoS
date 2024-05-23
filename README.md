@@ -24,7 +24,7 @@ HTRC TORCHLITE Hackathon group working on Part of Speech
  - Spanish: ?
  
 ### Proposed grouping and mapping of non-English POS tags for our widget 
- - https://github.com/gworthey/TORCHLITE_PoS/PoS_tagsets.txt
+ - [PoS_tagsets.txt](https://github.com/gworthey/TORCHLITE_PoS/blob/main/PoS_tagsets.txt)
 
 ### Sample non-English HTIDs:
  - Arabic: mdp.39015064570461
