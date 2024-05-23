@@ -19,7 +19,7 @@ HTRC TORCHLITE Hackathon group working on Part of Speech
 ### Non-English POS tagsets (need to confirm that these are actually what's being used in EF)
  - Arabic: ?
  - Chinese: https://verbs.colorado.edu/chinese/posguide.3rd.ch.pdf
- - French: http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php
+ - French: http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php   https://stackoverflow.com/questions/27513185/simplifying-the-french-pos-tag-set-with-nltk
  - German: http://www.sfs.uni-tuebingen.de/resources/stts-1999.pdf
  - Spanish: https://melaniewalsh.github.io/Intro-Cultural-Analytics/05-Text-Analysis/Multilingual/Spanish/03-POS-Keywords-Spanish.html
  
