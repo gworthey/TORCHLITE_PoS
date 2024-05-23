@@ -79,4 +79,7 @@
 - mdp.39015027224768	
 - mdp.39015026445380	
 - miun.ack4656.0001.001	
-- mdp.39015031060885	
+- mdp.39015031060885
+
+User Notes
+Spanish language distributions are not out of 100% (unknown error- future work)
