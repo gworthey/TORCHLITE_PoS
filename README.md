@@ -21,7 +21,7 @@ HTRC TORCHLITE Hackathon group working on Part of Speech
  - Chinese: https://verbs.colorado.edu/chinese/posguide.3rd.ch.pdf
  - French: http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php
  - German: http://www.sfs.uni-tuebingen.de/resources/stts-1999.pdf
- - Spanish: ?
+ - Spanish: https://melaniewalsh.github.io/Intro-Cultural-Analytics/05-Text-Analysis/Multilingual/Spanish/03-POS-Keywords-Spanish.html
  
 ### Proposed grouping and mapping of non-English POS tags for our widget 
  - [PoS_tagsets.txt](https://github.com/gworthey/TORCHLITE_PoS/blob/main/PoS_tagsets.txt)
