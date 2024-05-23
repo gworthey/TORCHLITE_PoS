@@ -44,19 +44,19 @@
 
 <!-- Arabic -->
     const posTags_ar = {
-  ADJ: "Adjectives",
+  ADJ: "AdjectivesAdverbs",
   CC: "Other",
   CD: "Other",
   DT: "Other",
-  DTJJ: "Adjectives",
-  DTJJR: "Adjectives",
+  DTJJ: "AdjectivesAdverbs",
+  DTJJR: "AdjectivesAdverbs",
   DTNN: "Nouns",
   DTNNP: "Nouns",
   DTNNPS: "Nouns",
   DTNNS: "Nouns",
   IN: "Other",
-  JJ: "Adjectives",
-  JJR: "Adjectives",
+  JJ: "AdjectivesAdverbs",
+  JJR: "AdjectivesAdverbs",
   NN: "Nouns",
   NNP: "Nouns",
   NNPS: "Nouns",
@@ -65,7 +65,7 @@
   PRP: "Pronouns",
   PRP$: "Pronouns",
   PUNC: "Other",
-  RB: "Adverbs",
+  RB: "AdjectivesAdverbs",
   RP: "Other",
   UH: "Other",
   VB: "Verbs",
@@ -75,19 +75,51 @@
   VBP: "Verbs",
   VN: "Verbs",
   WP: "Pronouns",
-  WRB: "Adverbs"
+  WRB: "AdjectivesAdverbs"
 };
 
+
 <!-- Chinese -->
-    const posTags_zh = {
-        
-    }
+   const posTags_zh = {
+        VA: "AdjectivesAdverbs",
+        VC: "Verbs",
+        VE: "Verbs",
+        VV: "Verbs",
+        NR: "Nouns",
+        NT: "Nouns",
+        NN: "Nouns",
+        PN: "Pronouns",
+        AD: "AdjectivesAdverbs",
+        LC: "Other",
+        DT: "Other",
+        CD: "Other",
+        OD: "Other",
+        P: "Other",
+        CC: "Other",
+        CS: "Other",
+        DEC: "Other",
+        DEG: "Other",
+        DER: "Other",
+        DEV: "Other",
+        SP: "Other",
+        AS: "Other",
+        ETC: "Other",
+        MSP: "Other",
+        IJ: "Other",
+        ON: "Other",
+        PU: "Other",
+        JJ: "Other",
+        FW: "Other",
+        LB: "Other",
+        SB: "Other",
+        BA: "Other"
+   };
 
 <!-- Spanish -->
-    const posTags_es = {
-        ADJ: "Adjectives",
+  const posTags_es = {
+        ADJ: "AdjectivesAdverbs",
 	    ADP: "Other",
-	    ADV: "Adverbs",
+	    ADV: "AdjectivesAdverbs",
 	    AUX: "Verbs",
 	    CONJ: "Other",
 	    CCONJ: "Other",
@@ -107,35 +139,85 @@
 
 <!-- French -->
     const posTags_fr = {
-    ADJ    = "Adjectives"
-    ADJWH  = "Adjectives"
-    ADV    = "Adverbs"
-    ADVWH  = "Adverbs"
-    CC     = "Other"    
-    CLO    = "Pronouns"
-    CLR    = "Pronouns"
-    CLS    = "Pronouns"
-    CS     = "Other"
-    DET    = "Other"
-    DETWH  = "Other"
-    ET     = "Other"
-    NC     = "Nouns"
-    NPP    = "Nouns"
-    P      = "Other"
-    PUNC   = "Other"
-    PRO    = "Pronouns"
-    PROREL = "Pronouns"
-    PROWH  = "Pronouns"
-    V      = "Verbs"
-    VIMP   = "Verbs"
-    VINF   = "Verbs"
-    VPP    = "Verbs"
-    VPR    = "Verbs"
-    VS     = "Verbs"
-    I      = "Other"
+    ADJ: "AdjectivesAdverbs",
+    ADJWH: "AdjectivesAdverbs",
+    ADV: "AdjectivesAdverbs",
+    ADVWH: "AdjectivesAdverbs",
+    CC: "Other",
+    CLO: "Pronouns",
+    CLR: "Pronouns",
+    CLS: "Pronouns",
+    CS: "Other",
+    DET: "Other",
+    DETWH: "Other",
+    ET: "Other",
+    NC: "Nouns",
+    NPP: "Nouns",
+    P: "Other",
+    PUNC: "Other",
+    PRO: "Pronouns",
+    PROREL: "Pronouns",
+    PROWH: "Pronouns",
+    V: "Verbs",
+    VIMP: "Verbs",
+    VINF: "Verbs",
+    VPP: "Verbs",
+    VPR: "Verbs",
+    VS: "Verbs",
+    I: "Other",
     }
 
 <!-- German -->
     const posTags_de = {
+ADJA: “AdjectivesAdverbs”,
+ADJD: “AdjectivesAdverbs”,
+ADV: “AdjectivesAdverbs”,
+APPR: “Other”,
+APPRART: “Other”,
+APPO: “Other”,
+APZR: “Other”,
+ART: “Other”,
+CARD: “Other”,
+FM: “Other”,
+ITJ: “Other”,
+KOUI: “Other”,
+KOUS: “Other”,
+KON: “Other”,
+KOKOM: “Other”,
+NN: “Nouns”,
+NE: “Nouns”,
+PDS: “Pronouns”,
+PDAT: “Pronouns”,
+PIS: “Pronouns”,
+PIAT: “Pronouns”,
+PIDAT: “Pronouns”,
+PPER: “Pronouns”,
+PPOSS: “Pronouns”,
+PPOSAT: “Pronouns”,
+PRELS: “Pronouns”,
+PRELAT: “Pronouns”,
+PRF: “Pronouns”,
+PWS: “Pronouns”,
+PWAT: “Pronouns”,
+PWAV: “Pronouns”,
+PAV: “Pronouns”,
+PTKZU: “AdjectivesAdverbs”,
+PTKNEG: “Other”,
+PTKVZ: “Other”,
+PTKANT: “Other”,
+PTKA: “Other”,
+VVFIN: “Verbs”,
+VVIMP: “Verbs”,
+VVINF: “Verbs”,
+VVIZU: “Verbs”,
+VVPP: “Verbs”,
+VAFIN: “Verbs”,
+VAIMP: “Verbs”,
+VAINF: “Verbs”,
+VAPP: “Verbs”,
+VMFIN: “Verbs”,
+VMINF: “Verbs”,
+VMOO: “Verbs”,
+XY: “Other”
         
     }
