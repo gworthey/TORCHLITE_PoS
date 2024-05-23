@@ -44,8 +44,39 @@
 
 <!-- Arabic -->
     const posTags_ar = {
-
-    }
+  ADJ: "Adjectives",
+  CC: "Other",
+  CD: "Other",
+  DT: "Other",
+  DTJJ: "Adjectives",
+  DTJJR: "Adjectives",
+  DTNN: "Nouns",
+  DTNNP: "Nouns",
+  DTNNPS: "Nouns",
+  DTNNS: "Nouns",
+  IN: "Other",
+  JJ: "Adjectives",
+  JJR: "Adjectives",
+  NN: "Nouns",
+  NNP: "Nouns",
+  NNPS: "Nouns",
+  NNS: "Nouns",
+  NOUN: "Nouns",
+  PRP: "Pronouns",
+  PRP$: "Pronouns",
+  PUNC: "Other",
+  RB: "Adverbs",
+  RP: "Other",
+  UH: "Other",
+  VB: "Verbs",
+  VBD: "Verbs",
+  VBG: "Verbs",
+  VBN: "Verbs",
+  VBP: "Verbs",
+  VN: "Verbs",
+  WP: "Pronouns",
+  WRB: "Adverbs"
+};
 
 <!-- Chinese -->
     const posTags_zh = {
