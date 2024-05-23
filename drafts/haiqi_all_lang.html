@@ -273,24 +273,8 @@
     }
 
     function getCategories(language) {
-      if (language === 'ara') {
-        return [];
+      return ["AdjectivesAdverbs", "Nouns", "Pronouns", "Verbs", "Other"];
       }
-      if (language === 'chi') {
-        return ["VerbsAdjectives", "Nouns", "Pronouns", "Adverbs", "Other"];
-      }
-      if (language === 'spa') {
-        return [];
-      }
-      if (language === 'fre') {
-        return [];
-      }
-      if (language === 'ger') {
-        return [];
-      } else {
-        return ["AdjectivesAdverbs", "Nouns", "Pronouns", "Verbs", "Other"];
-      }
-    }
 
     function aggregatePosDataByPage(pages, posTags, categories) {
       const posDataByPage = [];
