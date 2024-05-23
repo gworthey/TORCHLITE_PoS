@@ -1,0 +1,68 @@
+<!-- POS tagsets for all tagged languages -->
+<!-- English -->
+
+    const posTags_en = {
+      CC: "Other",
+      CD: "Other",
+      DT: "Other",
+      EX: "Other",
+      FW: "Other",
+      IN: "Other",
+      JJ: "AdjectivesAdverbs",
+      JJR: "AdjectivesAdverbs",
+      JJS: "AdjectivesAdverbs",
+      LS: "Other",
+      MD: "Other",
+      NN: "Nouns",
+      NNS: "Nouns",
+      NNP: "Nouns",
+      NNPS: "Nouns",
+      PDT: "Other",
+      POS: "Other",
+      PRP: "Pronouns",
+      PRP$: "Pronouns",
+      RB: "AdjectivesAdverbs",
+      RBR: "AdjectivesAdverbs",
+      RBS: "AdjectivesAdverbs",
+      RP: "Other",
+      SYM: "Other",
+      TO: "Other",
+      UH: "Other",
+      UNK: "Other",
+      VB: "Verbs",
+      VBD: "Verbs",
+      VBG: "Verbs",
+      VBN: "Verbs",
+      VBP: "Verbs",
+      VBZ: "Verbs",
+      WDT: "Other",
+      WP: "Pronouns",
+      WP$: "Pronouns",
+      WRB: "AdjectivesAdverbs"
+      }
+
+
+<!-- Arabic -->
+    const posTags_ar = {
+
+    }
+
+<!-- Chinese -->
+    const posTags_zh = {
+        
+    }
+
+<!-- Spanish -->
+    const posTags_es = {
+        
+    }
+
+<!-- French -->
+    const posTags_fr = {
+        
+    }
+
+<!-- German -->
+    const posTags_de = {
+        
+    }
