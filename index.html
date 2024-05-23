@@ -27,6 +27,14 @@
       align-items: center;
     }
 
+    .wrapped-text {
+      word-wrap: break-word;
+      white-space: normal;
+      overflow-wrap: break-word;
+      width: 800px;
+      padding: 10px;
+    }
+
     label {
       font-size: 1em; /* Decrease the font size */
       margin-right: 10px; /* Add space between label and input */
@@ -294,7 +302,8 @@ const posTags_es = {
     SYM: "Other",
     VERB: "Verbs",
     X: "Other",
-    SPACE: "Other"
+    SPACE: "Other",
+    PRON: "Pronouns"
 }
 
 const posTags_fr = {
@@ -586,7 +595,7 @@ const posTags_de = {
 
         const metadata = d3.select(metadataContainer); // Corrected to use d3.select
         metadata.html(`
-          <h2>${data.data.metadata.title}</h2>
+          <h2 class="wrapped-text">${data.data.metadata.title}</h2>
           <p>Author: ${data.data.metadata.contributor.name}</p>
           <p>Publication Year: ${data.data.metadata.pubDate}</p>
           <p>Id: ${volumeId}</p>
