@@ -85,7 +85,24 @@
 
 <!-- Spanish -->
     const posTags_es = {
-        
+        ADJ: "Adjectives",
+	    ADP: "Other",
+	    ADV: "Adverbs",
+	    AUX: "Verbs",
+	    CONJ: "Other",
+	    CCONJ: "Other",
+	    DET: "Other",
+	    INTJ: "Other",
+	    NOUN: "Nouns",
+	    NUM: "Other",
+	    PART: "Other",
+	    PROPN: "Noun",
+	    PUNCT: "Other",
+	    SCONJ: "Other",
+	    SYM: "Other",
+	    VERB: "Verbs",
+	    X: "Other",
+	    SPACE: "Other"
     }
 
 <!-- French -->
