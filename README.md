@@ -16,8 +16,11 @@ HTRC TORCHLITE Hackathon group working on Part of Speech
 
 ## Non-English work
 - Non-English POS tagsets (need to confirm that these are actually what's being used in EF)
+  
 -- Arabic: ?
+
 -- Chinese: https://verbs.colorado.edu/chinese/posguide.3rd.ch.pdf
+
 -- French: http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php
 -- German: http://www.sfs.uni-tuebingen.de/resources/stts-1999.pdf
 -- Spanish: ?
